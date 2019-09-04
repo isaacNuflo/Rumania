@@ -15,6 +15,8 @@ public class EstadoRumania implements Estado {
     private final Ciudad META = Ciudad.B;
 
     private Ciudad ciudadActual;
+    
+    private int heuristica = 0;
 
     private double costo;
 
@@ -25,6 +27,10 @@ public class EstadoRumania implements Estado {
     public EstadoRumania(Ciudad ciudad, double costo) {
         this.ciudadActual = ciudad;
         this.costo = costo;
+    }
+    
+    public int getHeuristica(){
+        return this.heuristica;
     }
     
     public Ciudad getCiudadActual(){
