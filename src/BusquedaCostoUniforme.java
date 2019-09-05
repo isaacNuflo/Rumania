@@ -41,6 +41,8 @@ public class BusquedaCostoUniforme {
         // al nodo que estamos buscando.
         while (n.getPadre() != null && !resultado) {
             if (n.getPadre().getEstadoActual().igual(nodoARevisar.getEstadoActual())) {
+                System.out.print("Nodo repetido: ");
+                nodoARevisar.getEstadoActual().mostrarEstado();
                 resultado = true;
             }
             n = n.getPadre();
@@ -58,8 +60,11 @@ public class BusquedaCostoUniforme {
     public static void realizarBusqueda(ListaOrdenadaSE<NodoDeBusqueda> lista, boolean d) {
         int contBusqueda = 1; // contador para el número de iteraciones
 
+        System.out.println("--------INICIO DE LA BUSQUEDA---------");
+
         while (!lista.estaVacia()) // mientras la cola no este vacía
         {
+            System.out.println("-----------------");
             System.out.print("Sale de Lista Ordenada:");
             NodoDeBusqueda nodoTemp = (NodoDeBusqueda) lista.eliminarAlInicio();
             System.out.print("( costo = " + nodoTemp.getCosto() + ")  ");
@@ -93,6 +98,8 @@ public class BusquedaCostoUniforme {
             } else // El estado meta ha sido encontrado. Mostrar el camino para llegar
             // a este
             {
+                System.out.println("---ES META!---");
+                System.out.println("");
                 // Use una pila para rastrear el camino desde el estado inicial
                 // hasta el estado meta.
                 Stack<NodoDeBusqueda> caminoSolucion = new Stack<>();
@@ -107,6 +114,8 @@ public class BusquedaCostoUniforme {
 
                 // El tamaño de la pila antes de vaciarla.
                 int iteraciones = caminoSolucion.size();
+
+                System.out.println("----CAMINO DE LA SOLUCION----");
 
                 for (int i = 0; i < iteraciones; i++) {
                     nodoTemp = caminoSolucion.pop();

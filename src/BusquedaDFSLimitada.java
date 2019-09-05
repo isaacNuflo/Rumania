@@ -2,14 +2,22 @@
 import java.util.ArrayList;
 import java.util.Stack;
 
-/**
- * Define una busqueda DFS.
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 /**
  *
  * @author isaac
  */
-public class BusquedaDFS {
+public class BusquedaDFSLimitada {
+
+    public static int profundidad;
+
+    public static void setProfundidad(int profundidad) {
+        BusquedaDFSLimitada.profundidad = profundidad;
+    }
 
     /**
      * Funcion de inicialización
@@ -30,19 +38,24 @@ public class BusquedaDFS {
      * Método de ayuda para revisar si un NodoDeBusqueda ya fue evaluado.
      * Returns true si ya fue evaluado, false en caso contrario.
      */
-    private static boolean revisarRepetidos(NodoDeBusqueda n) {
+    private static boolean revisarRepetidosYProfundidad(NodoDeBusqueda nodo) {
         boolean resultado = false;
-        NodoDeBusqueda nodoRevisado = n;
-
+        NodoDeBusqueda nodoRevisado = nodo;
+        int profundidad = 0;
         // Mientras el padre de n no sea nulo, revisar si es igual al nodo
         // que estamos buscando.
-        while (n.getPadre() != null && !resultado) {
-            if (n.getPadre().getEstadoActual().igual(nodoRevisado.getEstadoActual())) {
+        while (nodo.getPadre() != null && !resultado) {
+            profundidad++;
+            if (nodo.getPadre().getEstadoActual().igual(nodoRevisado.getEstadoActual())) {
                 System.out.print("Nodo repetido: ");
                 nodoRevisado.getEstadoActual().mostrarEstado();
                 resultado = true;
             }
-            n = n.getPadre();
+            if (profundidad > BusquedaDFSLimitada.profundidad) {
+                System.out.println("profundidad superada");
+                resultado = true;
+            }
+            nodo = nodo.getPadre();
         }
 
         return resultado;
@@ -56,8 +69,6 @@ public class BusquedaDFS {
      */
     public static void realizarBusqueda(Stack<NodoDeBusqueda> pila, boolean d) {
         int contadorBusqueda = 1; // contador para el número de iteraciones
-        
-        System.out.println("--------INICIO DE LA BUSQUEDA---------");
 
         while (!pila.isEmpty()) // mientras la pila no este vacía
         {
@@ -83,15 +94,13 @@ public class BusquedaDFS {
                             sucesoresTemp.get(i), nodoTemp.getCosto()
                             + sucesoresTemp.get(i).determinarCosto(), 0);
 
-                    if (!revisarRepetidos(nuevoNodo)) {
+                    if (!revisarRepetidosYProfundidad(nuevoNodo)) {
                         pila.add(nuevoNodo);
                     }
                 }
                 contadorBusqueda++;
             } else // El estado meta se encontro. Imprimir el camino que lleva a este
             {
-                System.out.println("---ES META!---");
-                System.out.println("");
                 // Use una pila para seguir el camino desde el estado inicial
                 // al estado meta
                 Stack<NodoDeBusqueda> caminoSolucion = new Stack<>();
@@ -107,8 +116,6 @@ public class BusquedaDFS {
                 // El tamaño de la pila antes de iterarla y vaciarla.
                 int iteraciones = caminoSolucion.size();
 
-                System.out.println("----CAMINO DE LA SOLUCION----");
-                
                 for (int i = 0; i < iteraciones; i++) {
                     nodoTemp = caminoSolucion.pop();
                     nodoTemp.getEstadoActual().mostrarEstado();
